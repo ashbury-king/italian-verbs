@@ -110,9 +110,9 @@
                                                     </v-card>
                                                     <v-container>
                                                         <v-btn :disabled="index === 0"
-                                                            @click="index -= 1;">{{leftButton}}</v-btn>
+                                                            @click="index -= 1; reveal = false;">{{leftButton}}</v-btn>
                                                         <v-btn :disabled="index === cards.length - 1"
-                                                            @click="index += 1;">{{rightButton}}</v-btn>
+                                                            @click="index += 1; reveal = false;">{{rightButton}}</v-btn>
                                                     </v-container>
                                                 </v-container>
                                             </div>
