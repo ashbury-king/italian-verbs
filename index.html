@@ -33,10 +33,28 @@
             border: 8px solid white;
             border-top-right-radius: 16px;
             border-top-left-radius: 16px;
+            border-bottom-right-radius: 16px;
+            border-bottom-left-radius: 16px;
         }
 
         .h-gr-1-2-vh {
             height: 85.41019662496846vh;
+        }
+
+        .h-gr-1-vh {
+            height: 61.80339887498949vh;
+        }
+
+        .c-pointer {
+            cursor: pointer;
+        }
+
+
+        .v-card--reveal {
+            bottom: 0;
+            opacity: 1 !important;
+            position: absolute;
+            width: 100%;
         }
     </style>
 </head>
@@ -54,7 +72,48 @@
                                         <div class="w3-container">
                                             <div class="vertical-center">
                                                 <v-container>
-                                                    Hello World
+                                                    <v-card class="mx-auto">
+                                                        <v-card-text>
+                                                            <div>{{cards[index].type}}</div>
+                                                            <p class="text-h4 text--primary">
+                                                                {{cards[index].tense}}
+                                                            </p>
+                                                            <!-- <p>{{cards[index].verb}}</p> -->
+                                                            <div class="text--primary">
+                                                                {{cards[index].verb}}
+                                                            </div>
+                                                        </v-card-text>
+                                                        <v-card-actions>
+                                                            <v-btn text color="pink lighten-3" @click="reveal = true">
+                                                                Learn More
+                                                            </v-btn>
+                                                        </v-card-actions>
+
+                                                        <v-expand-transition>
+                                                            <v-card v-if="reveal"
+                                                                class="transition-fast-in-fast-out v-card--reveal"
+                                                                style="height: 100%;">
+                                                                <v-card-text class="pb-0">
+                                                                    <p class="text-h4 text--primary"
+                                                                        v-for="result in cards[index].results">
+                                                                        {{result}}
+                                                                    </p>
+                                                                </v-card-text>
+                                                                <v-card-actions class="pt-0">
+                                                                    <v-btn text color="pink lighten-3"
+                                                                        @click="reveal = false">
+                                                                        Close
+                                                                    </v-btn>
+                                                                </v-card-actions>
+                                                            </v-card>
+                                                        </v-expand-transition>
+                                                    </v-card>
+                                                    <v-container>
+                                                        <v-btn :disabled="index === 0"
+                                                            @click="index -= 1;">{{leftButton}}</v-btn>
+                                                        <v-btn :disabled="index === cards.length - 1"
+                                                            @click="index += 1;">{{rightButton}}</v-btn>
+                                                    </v-container>
                                                 </v-container>
                                             </div>
                                         </div>
@@ -75,10 +134,492 @@
         integrity="sha512-nnNHpffPSgINrsR8ZAIgFUIMexORL5tPwsfktOTxVYSv+AUAILuFYWES8IHl+hhIhpFGlKvWFiz9ZEusrPcSBQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     <script>
+        const cards = [
+            {
+                type: 'English',
+                tense: 'Present Simple',
+                verb: 'to eat',
+                results: ['I eat breakfast every morning at 7am.'],
+            },
+            {
+                type: 'English',
+                tense: 'Present Continuous',
+                verb: 'to write',
+                results: ['I am currently writing an email to my boss.'],
+            },
+            {
+                type: 'English',
+                tense: 'Past Simple',
+                verb: 'to go',
+                results: ['Yesterday, I went to the gym for an hour.'],
+            },
+            {
+                type: 'English',
+                tense: 'Future Simple',
+                verb: 'to meet',
+                results: ['Tomorrow, I will meet my friend for lunch at noon.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'I speak.',
+                results: ['Io parlo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You speak.',
+                results: ['Tu parli.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'He/She speaks.',
+                results: ['Lui/Lei parla.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'We speak.',
+                results: ['Noi parliamo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You all speak.',
+                results: ['Voi parlate.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'They speak.',
+                results: ['Loro parlano.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'I believe.',
+                results: ['Io credo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You believe.',
+                results: ['Tu credi.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'He/She believes.',
+                results: ['Lui/Lei crede.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'We believe.',
+                results: ['Noi crediamo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You all believe.',
+                results: ['Voi credete.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'They believe.',
+                results: ['Loro credono.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'I hear.',
+                results: ['Io sento.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You hear.',
+                results: ['Tu senti.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'He/She hears.',
+                results: ['Lui/Lei sente.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'We hear.',
+                results: ['Noi sentiamo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'You all hear.',
+                results: ['Voi sentite.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Simple',
+                verb: 'They hear.',
+                results: ['Loro sentono.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'I am speaking.',
+                results: ['Io sto parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You are speaking.',
+                results: ['Tu stai parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'He/She is speaking.',
+                results: ['Lui/Lei sta parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'We are speaking.',
+                results: ['Noi stiamo parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You all are speaking.',
+                results: ['Voi state parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'They are speaking.',
+                results: ['Loro stanno parlando.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'I am believing.',
+                results: ['Io sto credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You are believing.',
+                results: ['Tu stai credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'He/She is believing.',
+                results: ['Lui/Lei sta credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'We are believing.',
+                results: ['Noi stiamo credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You all are believing.',
+                results: ['Voi state credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'They are believing.',
+                results: ['Loro stanno credendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'I am hearing.',
+                results: ['Io sto sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You are hearing.',
+                results: ['Tu stai sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'He/She is hearing.',
+                results: ['Lui/Lei sta sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'We are hearing.',
+                results: ['Noi stiamo sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'You all are hearing.',
+                results: ['Voi state sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Present Continuous',
+                verb: 'They are hearing.',
+                results: ['Loro stanno sentendo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'I spoke.',
+                results: ['Io parlai.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You spoke.',
+                results: ['Tu parlasti.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'He/She spoke.',
+                results: ['Lui/Lei parlò.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'We spoke.',
+                results: ['Noi parlammo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You all spoke.',
+                results: ['Voi parlaste.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'They spoke.',
+                results: ['Loro parlarono.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'I believed.',
+                results: ['Io credei.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You believed.',
+                results: ['Tu credesti.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'He/She believed.',
+                results: ['Lui/Lei credette.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'We believed.',
+                results: ['Noi credemmo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You all believed.',
+                results: ['Voi credeste.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'They believed.',
+                results: ['Loro crederono.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'I heard.',
+                results: ['Io sentii.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You heard.',
+                results: ['Tu sentisti.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'He/She heard.',
+                results: ['Lui/Lei sentì.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'We heard.',
+                results: ['Noi sentimmo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'You all heard.',
+                results: ['Voi sentiste.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Past Simple',
+                verb: 'They heard.',
+                results: ['Loro sentirono.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'I will speak.',
+                results: ['Io parlerò.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You will speak.',
+                results: ['Tu parlerai.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'He/She will speak.',
+                results: ['Lui/Lei parlerà.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'We will speak.',
+                results: ['Noi parleremo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You all will speak.',
+                results: ['Voi parlerete.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'They will speak.',
+                results: ['Loro parleranno.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'I will believe.',
+                results: ['Io crederò.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You will believe.',
+                results: ['Tu crederai.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'He/She will believe.',
+                results: ['Lui/Lei crederà.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'We will believe.',
+                results: ['Noi crederemo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You all will believe.',
+                results: ['Voi crederete.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'They will believe.',
+                results: ['Loro crederanno.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'I will hear.',
+                results: ['Io sentirò.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You will hear.',
+                results: ['Tu sentirai.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'He/She will hear.',
+                results: ['Lui/Lei sentirà.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'We will hear.',
+                results: ['Noi sentiremo.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'You all will hear.',
+                results: ['Voi sentirete.'],
+            },
+            {
+                type: 'Italian',
+                tense: 'Future Simple',
+                verb: 'They will hear.',
+                results: ['Loro sentiranno.'],
+            },
+        ];
+
+        const inPlaceRandom = (arr) => {
+            const newArr = []
+            arr.forEach(element => {
+                newArr.push(element)
+            });
+            for (let i = 0; i < newArr.length; i += 1) {
+                const randomIndex = Math.floor(Math.random() * newArr.length)
+                const randomElement = newArr[randomIndex]
+                const temp = newArr[i];
+                newArr[i] = randomElement;
+                newArr[randomIndex] = temp;
+            }
+            return newArr;
+        }
+    </script>
+    <script>
         new Vue({
             el: '#app',
             vuetify: new Vuetify({
                 theme: { dark: true, }
+            }),
+            data: () => ({
+                reveal: false,
+                index: 0,
+                leftButton: '<',
+                rightButton: '>',
+                cards: inPlaceRandom(cards),
             }),
         })
     </script>
